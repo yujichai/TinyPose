@@ -1,8 +1,8 @@
- python train_image_classifier.py \
-    --train_dir=vww_96_grayscale \
+python train_image_classifier.py \
+    --train_dir=ckpts/person_detection_1 \
     --dataset_name=visualwakewords \
     --dataset_split_name=train \
-    --dataset_dir=/Users/srivatsankrishnan/workspace/harvard-edge/cs249-assignment2/datavisualwakewords \
+    --dataset_dir=data/visualwakewords \
     --model_name=mobilenet_v1_025 \
     --preprocessing_name=mobilenet_v1 \
     --train_image_size=96 \
@@ -14,9 +14,5 @@
     --num_epochs_per_decay=2.5 \
     --moving_average_decay=0.9999 \
     --batch_size=96 \
-    --max_number_of_steps=500000 \
+    --max_number_of_steps=1000000 \
     --clone_on_cpu=True
-
-
-
-
