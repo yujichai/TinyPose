@@ -12,6 +12,7 @@ parser.add_argument('--sample_data', help='Sample data to estimate the min/max r
 parser.add_argument('--frozen_model', help='Path to frozen model', required=True)
 parser.add_argument('--output_node_name', default='MobilenetV1/Predictions/Reshape_1', help='The name of the output node')
 parser.add_argument('--output_model', default='output/person_detection.tflite', help='The output model name')
+parser.add_argument('--output_type', default='INT8', help='Output Node Type')
 
 args = parser.parse_args()
 
@@ -39,7 +40,11 @@ def representative_dataset_gen():
 
 converter = tf.lite.TFLiteConverter.from_frozen_graph(frozen_model, ['input'], [args.output_node_name])
 converter.inference_input_type = tf.lite.constants.INT8
-converter.inference_output_type = tf.lite.constants.INT8
+print('Output Node Type: ' + args.output_type)
+if args.output_type == 'INT8':
+    converter.inference_output_type = tf.lite.constants.INT8
+elif args.output_type == 'FLOAT':
+    converter.inference_output_type = tf.lite.constants.FLOAT
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 converter.representative_dataset = representative_dataset_gen
 
