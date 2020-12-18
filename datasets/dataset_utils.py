@@ -102,6 +102,16 @@ def image_to_tfexample(image_data, image_format, height, width, class_id):
   }))
 
 
+def facelandmark_to_tfexample(image_data, image_format, height, width, landmark):
+  return tf.train.Example(features=tf.train.Features(feature={
+      'image/encoded': bytes_feature(image_data),
+      'image/format': bytes_feature(image_format),
+      'image/landmark/xy': float_list_feature(landmark),
+      'image/height': int64_feature(height),
+      'image/width': int64_feature(width),
+  }))
+
+
 def download_url(url, dataset_dir):
   """Downloads the tarball or zip file from url into filepath.
 
@@ -174,7 +184,7 @@ def write_label_file(labels_to_class_names,
   """
   labels_filename = os.path.join(dataset_dir, filename)
   with tf.gfile.Open(labels_filename, 'w') as f:
-    for label in labels_to_class_names:
+    for label in labels_to_class_names.keys():
       class_name = labels_to_class_names[label]
       f.write('%d:%s\n' % (label, class_name))
 

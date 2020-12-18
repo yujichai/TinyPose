@@ -308,7 +308,7 @@ def mobilenet_v1(inputs,
                  min_depth=8,
                  depth_multiplier=1.0,
                  conv_defs=None,
-                 prediction_fn=slim.softmax,
+                 prediction_fn=tf.sigmoid,#slim.softmax,
                  spatial_squeeze=True,
                  reuse=None,
                  scope='MobilenetV1',
@@ -386,7 +386,7 @@ def mobilenet_v1(inputs,
           logits = tf.squeeze(logits, [1, 2], name='SpatialSqueeze')
       end_points['Logits'] = logits
       if prediction_fn:
-        end_points['Predictions'] = prediction_fn(logits, scope='Predictions')
+        end_points['Predictions'] = prediction_fn(logits)
   return logits, end_points
 
 mobilenet_v1.default_image_size = 224

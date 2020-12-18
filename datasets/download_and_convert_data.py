@@ -40,6 +40,7 @@ import tensorflow.compat.v1 as tf
 
 
 import download_and_convert_custom
+import download_and_convert_facelandmarks
 import download_and_convert_visualwakewords
 
 FLAGS = tf.app.flags.FLAGS
@@ -74,6 +75,8 @@ def main(_):
 
   if FLAGS.dataset_name == 'custom':
     download_and_convert_custom.run(FLAGS.dataset_dir)
+  if FLAGS.dataset_name == 'facelandmarks':
+    download_and_convert_facelandmarks.run(FLAGS.dataset_dir)
   elif FLAGS.dataset_name == 'visualwakewords':
     download_and_convert_visualwakewords.run(
         FLAGS.dataset_dir, FLAGS.small_object_area_threshold,

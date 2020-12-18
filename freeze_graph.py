@@ -43,6 +43,7 @@ import sys
 
 from google.protobuf import text_format
 
+import tensorflow.compat.v1 as tf
 from tensorflow.core.framework import graph_pb2
 from tensorflow.core.protobuf import saver_pb2
 from tensorflow.core.protobuf.meta_graph_pb2 import MetaGraphDef
@@ -209,6 +210,9 @@ def freeze_graph_with_def_protos(input_graph_def,
       saver.restore(sess, input_checkpoint)
       if initializer_nodes:
         sess.run(initializer_nodes.replace(" ", "").split(","))
+
+    #all_nodes = [n for n in tf.get_default_graph().as_graph_def().node]
+    #print(all_nodes)
 
     variable_names_whitelist = (
         variable_names_whitelist.replace(" ", "").split(",")

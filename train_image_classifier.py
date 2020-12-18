@@ -454,6 +454,7 @@ def main(_):
     image_preprocessing_fn = preprocessing_factory.get_preprocessing(
         preprocessing_name,
         is_training=True,
+        random_crop=False,
         use_grayscale=FLAGS.use_grayscale)
 
     ##############################################################
@@ -465,15 +466,14 @@ def main(_):
           num_readers=FLAGS.num_readers,
           common_queue_capacity=20 * FLAGS.batch_size,
           common_queue_min=10 * FLAGS.batch_size)
-      [image, label] = provider.get(['image', 'label'])
-      label -= FLAGS.labels_offset
+      [image, xy] = provider.get(['image', 'xy'])
 
       train_image_size = FLAGS.train_image_size or network_fn.default_image_size
 
       image = image_preprocessing_fn(image, train_image_size, train_image_size)
 
-      images, labels = tf.train.batch(
-          [image, label],
+      images, xys = tf.train.batch(
+          [image, xy],
           batch_size=FLAGS.batch_size,
           num_threads=FLAGS.num_preprocessing_threads,
           capacity=5 * FLAGS.batch_size)
